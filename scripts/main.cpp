@@ -2,10 +2,11 @@
 #pragma warning(disable : 4996) //no anda el strcpy sino
 #include "../include/main.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {//
 	size_t frames=0;
+	cout << CODECC;
 	bienvenida();
-
+	
 	//Valido argumentos
 	cmdline cmdl(options); //DESCOMENTAR PARA RECURSIVO
 	cmdl.parse(argc, argv); //DESCOMENTAR PARA RECURSIVO
@@ -14,6 +15,7 @@ int main(int argc, char* argv[]) {
 	string temp = "temp/";
 	temp += output_file; //COMENTAR PARA RECURSIVO
 
+	cout << "temp:" << temp;
 	/////*=============RENDERIZAR A HSV============*/
 	cout << "*Se va a empezar a renderizar el fractal -> HSV (pmg)*\n";
 
@@ -24,7 +26,7 @@ int main(int argc, char* argv[]) {
 	
 	else if (MD_FT == MODO_FUNCIONAMIENTO::RECURSIVO) {
 		cout << " [MODO RECURSIVO]" << endl;
-		frames = julia_hsv_ntimes(temp, USE_MODULO, USE_ITERATION, ffunction, FRACTAL_FRAMES, 'X');
+		frames = julia_hsv_ntimes(temp, USE_MODULO, USE_ITERATION, ffunction, FRACTAL_FRAMES, EVAL_C);
 	}
 	else if (MD_FT == MODO_FUNCIONAMIENTO::CONVERT) {
 		frames = USE_ITERATION;
@@ -37,13 +39,13 @@ int main(int argc, char* argv[]) {
 	/*=============CONVERTIR HSV A RGB============*/
 	cout << "=======================================================\n";
 	cout << "*Se va a empezar a convertir de HSV a RGB (png)*\n";
-	hsv2rgb_ntimes(temp, pop_n(temp,4).append("_S.pgm"), pop_n(temp, 4).append("_V.pgm"), frames, 'X');
+	hsv2rgb_ntimes(temp, pop_n(temp,4).append("_S.pgm"), pop_n(temp, 4).append("_V.pgm"), frames, EVAL_C);
 	
 	/*=============CONVERTIR RGB a VIDEO============*/
 	cout << "=======================================================\n";
 	cout << "*Se va a empezar a convertir el video (avi)*\n";
 	string video_name = pop_n(output_file, 4).append(".avi");
-	string images_names = get_files_name(temp, 'X', "%04d").append(".png");
+	string images_names = get_files_name(temp, EVAL_C, "%04d").append(".png");
 
 	convert_video(video_name, images_names, frames);
 	
@@ -107,7 +109,8 @@ string hsv2rgb(const string name_channel_h, const string name_channel_s, const s
 	merge(channels, fin_img);
 	
 	//Me fijo la calidad con la que quiero grabar
-	cvtColor(fin_img, bgr, 54);
+	cvtColor(fin_img, bgr, COLOR_HSV2BGR); //CV_HSV2BGR
+	
 	imwrite(in +".png", bgr);
 
 	//Destruyo todo
@@ -186,7 +189,7 @@ int julia_hsv_ntimes(const string output, const int& limite_modulo, const int& i
 	return k;
 }
 
-int remplace(string &my_str, string &sub_str, char &c) {
+int remplace(string &my_str, string &sub_str, const char c) {
 	int index;
 
 	//replace all Hello with welcome
@@ -223,7 +226,7 @@ int generador_de_cuadros(string out, size_t &frames) {
 	string* news;
 	argp[0] = out; //cout << argp[0] << endl; //output
 	argp[1] = math_formula; //cout << argp[1] << endl; //math
-	char my_eval_c = 'X';
+	char my_eval_c = EVAL_C;
 
 	char math[100];
 	char input_name[30];
@@ -270,8 +273,8 @@ int convert_video(string & directory, string& imagesd, const size_t tam) {
 	// Create a VideoCapture object and use camera to capture the video
 	VideoCapture cap(imagesd);
 
-	cap.set(6, VideoWriter::fourcc('M', 'J', 'P', 'G'));   //64bits
-	//cap.set(6, CV_FOURCC('M', 'J', 'P', 'G')); //32bits
+	cap.set(CAP, CODECC);
+	//cap.set(6, CODECC);   //64bits
 	// Check if camera opened successfully
 	if (!cap.isOpened())
 	{
@@ -279,15 +282,18 @@ int convert_video(string & directory, string& imagesd, const size_t tam) {
 		return -1;
 	}
 
-	// Default resolution of the frame is obtained.The default resolution is system dependent. 
-	//int frame_width = cap.get(CAP_PROP_FRAME_WIDTH);   //32bits
-	//int frame_height = cap.get(CAP_PROP_FRAME_HEIGHT); //32bits
-
-	int frame_width = cap.get(CAP_PROP_FRAME_WIDTH);  //64bits
-	int frame_height = cap.get(CAP_PROP_FRAME_HEIGHT);//64bits
+	int frame_width = cap.get(FRAME_W);  //64bits
+	int frame_height = cap.get(FRAME_H);//64bits
 
 	// Define the codec and create VideoWriter object.The output is stored in 'outcpp.avi' file. 
-	VideoWriter video(directory, 0, VIDEO_FRAMES, Size(frame_width, frame_height));
+	VideoWriter video(directory, CODECC_WRITER, VIDEO_FRAMES, Size(frame_width, frame_height));
+
+	/*if (video.isOpened())
+	{
+		cout << "Error opening video writter stream" << endl;
+		return -1;
+	}*/
+
 	size_t n = 1;
 	while (n <= tam)
 	{

@@ -1,17 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerCommandArguments>
-    </LocalDebuggerCommandArguments>
-    <RemoteDebuggerCommandArguments>
-    </RemoteDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-m c -o "fractales/fractal_exponencialX.pgm" -f "-0.621 + exp(z^3)" -vf 10 -vr 400 -iter 50</LocalDebuggerCommandArguments>
+    <RemoteDebuggerCommandArguments>-m c -o "fractales/fractal_exponencialX.pgm" -f "-0.621 + exp(z^3)" -vf 10 -vr 400 -iter 50</RemoteDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerCommandArguments>-m r -o TEST_RECURSIVOX.pgm -f "(-0.285 + 0.259*i +z^2)" -vr 40 -vf 1 -iter 30</LocalDebuggerCommandArguments>
-    <RemoteDebuggerCommandArguments>-m r -o TEST_RECURSIVOX.pgm -f "(-0.285 + 0.259*i +z^2)" -vr 40 -vf 1 -iter 30</RemoteDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-m c -o "fractales/fractal_exponencialX.pgm" -f "-0.621 + exp(z^3)" -vf 1 -vr 400 -iter 50</LocalDebuggerCommandArguments>
+    <RemoteDebuggerCommandArguments>-m c -o "fractales/fractal_exponencialX.pgm" -f "-0.621 + exp(z^3)" -vf 1 -vr 400 -iter 50</RemoteDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>-m r -o TEST_RECURSIVOX.pgm -f "(-0.285 + 0.259*i +z^2)" -vr 40 -vf 1 -iter 30</LocalDebuggerCommandArguments>
-    <RemoteDebuggerCommandArguments>-m r -o TEST_RECURSIVOX.pgm -f "(-0.285 + 0.259*i +z^2)" -vr 40 -vf 1 -iter 30</RemoteDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-m c -o "fractales/fractal_exponencialX.pgm" -f "-0.621 + exp(z^3)" -vf 1 -vr 400 -iter 50</LocalDebuggerCommandArguments>
+    <RemoteDebuggerCommandArguments>-m c -o "fractales/fractal_exponencialX.pgm" -f "-0.621 + exp(z^3)" -vf 1 -vr 400 -iter 50</RemoteDebuggerCommandArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LocalDebuggerCommandArguments>-m c -o "fractales/fractal_exponencialX.pgm" -f "-0.621 + exp(z^3)" -vf 10 -vr 400 -iter 50</LocalDebuggerCommandArguments>
+    <RemoteDebuggerCommandArguments>-m c -o "fractales/fractal_exponencialX.pgm" -f "-0.621 + exp(z^3)" -vf 10 -vr 400 -iter 50</RemoteDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

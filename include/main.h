@@ -1,6 +1,7 @@
 //HEADER del main
 #ifndef __MAIN__
 #define __MAIN__
+
 #include <iostream>
 #include <fstream>
 
@@ -28,6 +29,26 @@
 using namespace std;
 using namespace cv;
 
+//Me fijo el build
+#if defined _M_IX86 //ESTABLE
+#define CODECC CV_FOURCC('M', 'J', 'P', 'G')
+//#define CODECC CV_FOURCC('X', '2', '6', '4') //X264
+#define CODECC_WRITER 0
+#define FRAME_W CV_CAP_PROP_FRAME_WIDTH
+#define FRAME_H CV_CAP_PROP_FRAME_HEIGHT
+#define CAP CV_CAP_PROP_FOURCC
+#elif defined _M_X64 //BUG DE LINKEO. NO ANDA EL CONVERTIDOR DEL VIDEO TRY 32 BITS.
+//#define CODECC VideoWriter::fourcc('X', '2', '6', '4')
+#define CODECC VideoWriter::fourcc('M', 'J', 'P', 'G')
+#define FRAME_W CAP_PROP_FRAME_WIDTH
+#define FRAME_H CAP_PROP_FRAME_HEIGHT
+#define CAP CAP_PROP_FOURCC
+#define CODECC_WRITER CODECC
+
+#else 
+#define CODECC CV_FOURCC('M', 'J', 'P', 'G')
+#endif
+
 //#include "C:/Users/Kevin/source/repos/opencv_prueba/opencv_prueba.h"
 void bienvenida();
 
@@ -46,7 +67,7 @@ bool hsv2rgb_ntimes(const string name_channel_h, const string name_channel_s, co
 int convert_video(string& directory, string& imagesd, const size_t tam);
 int julia_transform(const string output, const int& limite_modulo, const int& iteracion_max, string func, const size_t n, const char extract);
 int generador_de_cuadros(string out, size_t& frames);
-int remplace(string& my_str, string& sub_str, char& c);
+int remplace(string& my_str, string& sub_str, const char c);
 
 /*Para recorrer los argumentos*/
 static void opt_input(string const& arg);
@@ -81,6 +102,7 @@ static double EVAL_STOP;
 const int CANT_EVAL_ARG = 3;
 static double VIDEO_FRAMES; //Modificar
 const string FUNCION_NUCLEO = "z";
+const char EVAL_C = 'X';
 const int CANT_RECURSIV = 30;
 const int LIMIT_SUCESIONES = 50;
 
@@ -145,7 +167,14 @@ static void opt_output(string const& arg) {
 	else
 	{
 		try {
-			output_file = pop_n(arg, 4).append(".pgm"); //variable global
+			output_file = pop_n(arg, 4);
+			if (arg.find(EVAL_C) == string::npos) {
+				cout << "El archivo de salida no tiene X. Se va a agregar" << endl;
+				output_file.push_back(EVAL_C); //variable global
+			}
+			output_file.append(".pgm"); //variable global
+			
+			
 		}
 		catch (...) {
 			cout << "Archivo de salida invalido -o <salida.$$$>.\n";
@@ -160,16 +189,15 @@ static void opt_function(string const& arg) {
 	Stack <Token> * TKstk;
 	Stack <Token> * SHUNT;
 	string math = arg;
-	char eval_c = 'X';
 	math_formula = arg;
 
 	if (MD_FT == MODO_FUNCIONAMIENTO::EVAL && ejecuciones==0) { //Lee en la linea de argumentos
-		if (arg.find(eval_c) == string::npos) {
+		if (arg.find(EVAL_C) == string::npos) {
 			cout << "Se ingreso una funcion a evaluar y no se encuentra la X" << endl;
 			exit(1);
 		}
 		string one = "1";
-		remplace(math, one, eval_c);
+		remplace(math, one, EVAL_C);
 	}
 	ejecuciones++;
 	if((stk = read_math_expression(math)) == nullptr)

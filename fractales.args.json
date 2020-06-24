@@ -3,6 +3,34 @@
   "Id": "26785d26-7fd4-458a-9309-8c20b133d34c",
   "Items": [
     {
+      "Id": "87e9c076-c080-473e-8187-c1c98693280b",
+      "Command": "-m c -o \"fractales/fractal_exponencialX.pgm\" -f \"-0.621 + exp(z^3)\" -vf 1 -vr 400 -iter 50"
+    },
+    {
+      "Id": "eb700eec-96d3-426a-8661-76ddaf0dad23",
+      "Command": "-m e -o \"fractales/fractal_exponencial.pgm\" -f \"-0.621 + exp(z^3)\" -vf 10 -vr 400 -iter 20"
+    },
+    {
+      "Id": "dd46b929-1a72-48ed-a430-4fe331f18467",
+      "Command": "-m e -o \"fractales/fractal_exponencial.pgm\" -f \"exp(z^3)-0.621*X\" -eval \"1 2 1\" -vf 10 -vr 400 -mod 5"
+    },
+    {
+      "Id": "1adf5f44-7949-4651-8dc4-6eb56f05d07c",
+      "Command": ""
+    },
+    {
+      "Id": "6f44949d-e326-44bf-8439-4dedd773c52a",
+      "Command": "-m r -o \"fractales/fractal_exponencial.pgm\" -f \"exp(z^3)-0.621\" -vf 10 -vr 400"
+    },
+    {
+      "Id": "350d1c54-5934-452e-ab6a-135971c01c37",
+      "Command": "-m r -o \"fractales/fractal_exponencial.pgm\" -f \"-0.621 + exp(z^3)\" -vf 10 -vr 400 -iter 200"
+    },
+    {
+      "Id": "fd92fd06-4369-4707-a657-4d6168c10e19",
+      "Command": ""
+    },
+    {
       "Id": "60ead105-6cd1-42eb-a934-4334d4c2bef7",
       "Command": "Pruebas de argumentos",
       "Items": [
