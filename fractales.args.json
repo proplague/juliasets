@@ -1,0 +1,88 @@
+{
+  "FileVersion": 2,
+  "Id": "26785d26-7fd4-458a-9309-8c20b133d34c",
+  "Items": [
+    {
+      "Id": "60ead105-6cd1-42eb-a934-4334d4c2bef7",
+      "Command": "Pruebas de argumentos",
+      "Items": [
+        {
+          "Id": "59929c7d-d169-4a01-a9f8-291598662e78",
+          "Command": "-m c -o TEST_RECURSIVOX.pgm -f \"(-0.285 + 0.259*i +z^2)\" -vr 40 -vf 5 -iter 10"
+        },
+        {
+          "Id": "2b11c0be-9a1e-4bab-ae42-326689176cab",
+          "Command": "-m r -o TEST_RECURSIVOX.pgm -f \"(-0.285 + 0.259*i +z^2)\" -vr 40 -vf 1 -iter 30"
+        },
+        {
+          "Id": "494bae99-e4ae-4db2-a7d3-8d82f3cb26e6",
+          "Command": "-o sample_outputs/temp/FractalRotadoX.pgm -f \"exp(X*4*PI*i)*(-X + 0.259*i +z^2)\" -eval 0.1 0.2 0.05"
+        },
+        {
+          "Id": "d8196890-e614-487a-8134-2998c302b019",
+          "Command": "-c -o sample_outputs/temp/FractalRotadoX.pgm -f \"exp(X*4*PI*i)*(-X + 0.259*i +z^2)\" -iter 10"
+        },
+        {
+          "Id": "878052b0-a14e-40e0-a6fe-23e9c985d3c6",
+          "Command": "-m e -o TESTX.pgm -f \"exp(X*4*PI*i)*(-X + 0.259*i +z^2)\" -eval \"0.1 0.2 0.05\" -vr 40 -vf 5"
+        },
+        {
+          "Id": "d44a60e0-fe80-4885-9e11-a0d7a2788e02",
+          "Command": "-m r -o sample_outputs/temp/FractalRotadoX.pgm -f \"exp(2*4*PI*i)*(-2 + 0.259*i +z^2)\" -vr 200 -vf 1 -mod 2"
+        },
+        {
+          "Id": "dc0548b4-b99e-47ea-b057-ad76d53a8190",
+          "Command": "-m e -o sample_outputs/temp/FractalRotadoX.pgm -f \"exp(X*4*PI*i)*(X + 0.259*i +z^2)\" -eval 0.1 0.2 0.05"
+        },
+        {
+          "Id": "4a3aa6d1-86b2-457b-9b00-64938a316e4e",
+          "Command": "-h"
+        }
+      ]
+    },
+    {
+      "Id": "fc99c02c-b83b-4d9c-8a63-772239247fad",
+      "Command": "-i sample.pgm -o sample_outputs/temp/FractalRotadoX.pgm -f \"exp(X*4*PI*i)*(-X + 0.259*i +z^2)\" -b 0.1 0.2 0.05"
+    },
+    {
+      "Id": "fd2bbd15-eed1-4bd9-b1c4-a3ad05d7e4fa",
+      "Command": "-i sample.pgm -o sample_outputs/temp/iteraciones_dobleX.pgm -f \"-X + X*i +z^2\" -b 0.1 1 0.01"
+    },
+    {
+      "Id": "4fe20d00-befa-4068-bbe9-a708d259797f",
+      "Command": ""
+    },
+    {
+      "Id": "a21f594e-c82d-43a1-89bf-76a8500efde4",
+      "Command": "-i sample.pgm -o sample_outputs/temp/iteracionesX.pgm -f \"-X + 0.559*i +z^2\" -b 0.1 1 0.01"
+    },
+    {
+      "Id": "17f25f06-c2d5-45c4-9e51-d0d18098851c",
+      "Command": ""
+    },
+    {
+      "Id": "bdd939b4-c250-499e-9d7a-6c8abaf7d5c8",
+      "Command": "-i sample.pgm -o sample_outputs/Fractal_Julia_NUBE_X.pgm -f \"0.285 + 0.01*i+z^2\""
+    },
+    {
+      "Id": "ec93d26f-d14e-4da9-88b0-805133deb645",
+      "Command": ""
+    },
+    {
+      "Id": "038fc839-bbca-4c75-92a1-27ba2dca1e58",
+      "Command": "0.285 + 0.01i"
+    },
+    {
+      "Id": "c2cc91b5-2aa1-4611-ba21-5073ba48e497",
+      "Command": "-i sample.pgm -o sample_outputs/fractal1.pgm -f \"z^2\""
+    },
+    {
+      "Id": "202c0ac6-a097-4e65-80b8-a3cb1f6cc2fe",
+      "Command": ""
+    },
+    {
+      "Id": "88210a6e-2d50-4414-a5c3-441d935a9eaa",
+      "Command": "-i sample.pgm -o sample_outputs/Fractal_julia_ESTILO_X.pgm -f \"-0.462 + 0.559*i +z^2\" -b 0.1 0.2 0.05"
+    }
+  ]
+}
