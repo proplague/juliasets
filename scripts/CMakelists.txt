@@ -1,0 +1,2 @@
+ADD_EXECUTABLE(fractales_demo main.cpp Fractal.cpp Pixel.cpp Token.cpp  benchmark_propio.cpp functions.cpp main.cpp Complejo.cpp JuliaFractal.cpp PixelArray.cpp Utils.cpp cmdline.cpp img.cpp stringUtils.cpp)
+target_link_libraries (fractales_demo LINK_PUBLIC fractales)
