@@ -75,6 +75,7 @@ static void opt_output(string const& arg);
 static void opt_function(string const& arg);
 static void opt_videoframe(string const& arg);
 static void opt_resolution(string const& arg);
+static void opt_fractal_quality(string const& arg);
 static void opt_iterations(string const& arg);
 static void opt_interval(string const& arg);
 static void opt_module(string const& arg);
@@ -114,11 +115,12 @@ static option_t options[] = {
 
 	{1,"vf","videoframe","-", opt_videoframe, OPT_DEFAULT},
 	{1,"vr","resolution","-", opt_resolution, OPT_DEFAULT},
-	{1,"iter","iterations","-", opt_iterations, OPT_DEFAULT},
+	{1,"iter","iterations","-", opt_iterations, OPT_DEFAULT}, //Cuantas imagenes genera
+	{1,"fq","fractalquality","-", opt_fractal_quality, OPT_DEFAULT}, //Cantidad de iteraciones maximas del fractal (coloreado)
 	{1,"mod","module","-", opt_module, OPT_DEFAULT},
 	{3,"eval","intervalo","-", opt_interval, OPT_DEFAULT},
 	
-	{1,"f","ffunction","OUT.pgm", opt_function, OPT_MANDATORY}, //OUT.pgm
+	{1,"f","ffunction","OUT.pgm", opt_function, OPT_DEFAULT}, //OUT.pgm
 	{1,"m","mode","-", opt_mode, OPT_MANDATORY},
 
 	{0,"b","benchmark",NULL, opt_benchmark, OPT_SEEN},
@@ -191,6 +193,19 @@ static void opt_function(string const& arg) {
 	string math = arg;
 	math_formula = arg;
 
+	if (arg == "-") { //caso default, va a ser el caso convertir
+		if (MD_FT != MODO_FUNCIONAMIENTO::CONVERT) {
+			cout << "No se ingreso la funcion correspondiente <-f <funcion>.\n";
+			exit(1);
+		}
+		else {
+			return; //Si es convert salteo.
+		}
+	}
+	if (MD_FT == MODO_FUNCIONAMIENTO::CONVERT) {
+		return;
+	}
+
 	if (MD_FT == MODO_FUNCIONAMIENTO::EVAL && ejecuciones==0) { //Lee en la linea de argumentos
 		if (arg.find(EVAL_C) == string::npos) {
 			cout << "Se ingreso una funcion a evaluar y no se encuentra la X" << endl;
@@ -253,9 +268,13 @@ static void opt_interval(string const& arg) {
 			FRACTAL_FRAMES = 10;
 			EVAL_STEP = 0.1;
 		}
+		else {
+			return;
+		}
 	}
 	else
 	{
+
 		try {
 			istringstream iss(arg);
 			string s;
@@ -268,10 +287,12 @@ static void opt_interval(string const& arg) {
 
 			FRACTAL_FRAMES = ((elem[1]-elem[0])/(double)elem[2]); //Me falta entender como funca
 			cout << "FRAMES:" << FRACTAL_FRAMES << endl;
+			USE_ITERATION = FRACTAL_FRAMES;
 			if (FRACTAL_FRAMES < 0) {
 				cout << "Error: STOP es mayor a start.\n";
 				exit(1);
 			}
+
 			EVAL_STEP = elem[2];
 			EVAL_STOP = elem[1];
 			EVAL_START = elem[0];
@@ -280,6 +301,7 @@ static void opt_interval(string const& arg) {
 			cout << "Error al interpretar -eval <start> <stop> <step>\n";
 			exit(1);
 		}
+
 	}
 }
 
@@ -319,18 +341,42 @@ static void opt_resolution(string const& arg)
 	}
 }
 
-static void opt_iterations(string const& arg)
+static void opt_fractal_quality(string const& arg)
 {
+	if (MD_FT == MODO_FUNCIONAMIENTO::EVAL) {
+		return;
+	}
 	if (arg == "-") //Si no tiene nada
 	{
 		FRACTAL_FRAMES = 100;
+	}
+	else
+	{
+
+		try {
+			FRACTAL_FRAMES = stoi(arg);
+		}
+		catch (...) {
+			cout << "Error al interpretar -fq <num>\n";
+			exit(1);
+		}
+	}
+}
+
+static void opt_iterations(string const& arg)
+{
+	if (MD_FT == MODO_FUNCIONAMIENTO::EVAL) {
+		return;
+	}
+	if (arg == "-") //Si no tiene nada
+	{
 		USE_ITERATION = 100;
+
 	}
 	else
 	{
 		try {
-			FRACTAL_FRAMES = stoi(arg);
-			USE_ITERATION = FRACTAL_FRAMES;
+			USE_ITERATION = stoi(arg);
 		}
 		catch (...) {
 			cout << "Error al interpretar -iter <num>\n";
@@ -399,6 +445,7 @@ static void opt_help(string const& arg) {
 	cout << "|   -vr <Pixeles>                 -- Resolucion de la imagen.                           |\n";
 	cout << "|   -mod <Modulo>                 -- Modulo limite del fractal.                         |\n";
 	cout << "|   -vf <Frames>                  -- Frames del video a convertir.                      |\n";
+	cout << "|   -vq <Iter>                    -- Define las iteraciones del fractal (coloreado)     |\n";
 	cout << "|   -o <output.pgm>               -- Archivo de salida.                                 |\n";
 	cout << "|   -h                            -- Help                                               |\n";
 	cout << "|_______________________________________________________________________________________|\n";
@@ -407,8 +454,11 @@ static void opt_help(string const& arg) {
 	cout << "|_______________________________________________________________________________________|\n";
 	cout << "|                                      *EJEMPLOS*                                       |\n";
 	cout << "|                                                                                       |\n";
-	cout << "|   -m c -o TEST_RECURSIVOX.pgm -f '-0.285+0.259*i+z^2' -vr 40 -vf 5 -iter 10           |\n";
+	cout << "|   -m e -o fractal_M.pgm -f '-X+exp(z^3)' -eval '0.1 1 0.01' -vf 10 -vr 400 -mod 5     |\n";
+	cout << "|   -m r -o fractal_MUESTRAX.pgm -f -0.285+0.259*i+z^2 -vf 20 -vr 200 -iter 100 -fq 100 |\n";
 	cout << "|   -m e -o TESTX.pgm -f '-X+0.259*i+z^2' -eval '0.1 0.2 0.05' -vr 40 -vf 5 -vr 400     |\n";
+	cout << "|   -m r -o TEST_RECURSIVOX.pgm -f '-0.285+0.259*i+z^2' -vr 40 -vf 1 -iter 30           |\n";
+	cout << "|   -m c -o fractales/fractal_exponencial.pgm -iter 89 -vf 30                           |\n";
 	cout << "|   -m r -o TEST_RECURSIVOX.pgm -f '-0.285+0.259*i+z^2' -vr 40 -vf 1 -iter 30           |\n";
 	cout << "|=======================================================================================|\n";
 
