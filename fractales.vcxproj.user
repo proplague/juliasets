@@ -9,8 +9,8 @@
     <RemoteDebuggerCommandArguments>-m c -o "fractales/fractal_exponencialX.pgm" -f "-0.621 + exp(z^3)" -vf 1 -vr 400 -iter 50</RemoteDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>-m c -o "fractales/fractal_exponencialX.pgm" -f "-0.621 + exp(z^3)" -vf 1 -vr 400 -iter 50</LocalDebuggerCommandArguments>
-    <RemoteDebuggerCommandArguments>-m c -o "fractales/fractal_exponencialX.pgm" -f "-0.621 + exp(z^3)" -vf 1 -vr 400 -iter 50</RemoteDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-m r -o "fractales/fractal_exponencial_MUESTRAX.pgm" -f "-0.285 + 0.259*i +z^2" -vf 20 -vr 200 -iter 100 -fq 100</LocalDebuggerCommandArguments>
+    <RemoteDebuggerCommandArguments>-m r -o "fractales/fractal_exponencial_MUESTRAX.pgm" -f "-0.285 + 0.259*i +z^2" -vf 20 -vr 200 -iter 100 -fq 100</RemoteDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerCommandArguments>-m c -o "fractales/fractal_exponencialX.pgm" -f "-0.621 + exp(z^3)" -vf 10 -vr 400 -iter 50</LocalDebuggerCommandArguments>

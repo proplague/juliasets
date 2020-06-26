@@ -1,3 +1,8 @@
+/*
+	
+
+*/
+
 //Main principal
 #pragma warning(disable : 4996) //no anda el strcpy sino
 #include "../include/main.h"
@@ -158,22 +163,22 @@ int julia_hsv_ntimes(const string output, const int& limite_modulo, const int& i
 	auto start = std::chrono::high_resolution_clock::now();
 
 	/* =================== CANAL HSV =================== */
-	JuliaFractal canal_h(limite_modulo, USE_RESOLUTION_C, USE_RESOLUTION_C, TYPE_P2, USE_PIXEL_QUALITY, iteracion_max, func, 'r'); // RED GREEN BLUE
-	JuliaFractal canal_s(limite_modulo, USE_RESOLUTION_C, USE_RESOLUTION_C, TYPE_P2, USE_PIXEL_QUALITY, iteracion_max, func, 'g'); // RED GREEN BLUE
-	JuliaFractal canal_v(limite_modulo, USE_RESOLUTION_C, USE_RESOLUTION_C, TYPE_P2, USE_PIXEL_QUALITY, iteracion_max, func, 'b'); // RED GREEN BLUE
+	JuliaFractal canal_h(limite_modulo, USE_RESOLUTION_C, USE_RESOLUTION_C, TYPE_P2, USE_PIXEL_QUALITY, n, func, 'r'); // RED GREEN BLUE
+	JuliaFractal canal_s(limite_modulo, USE_RESOLUTION_C, USE_RESOLUTION_C, TYPE_P2, USE_PIXEL_QUALITY, n, func, 'g'); // RED GREEN BLUE
+	JuliaFractal canal_v(limite_modulo, USE_RESOLUTION_C, USE_RESOLUTION_C, TYPE_P2, USE_PIXEL_QUALITY, n, func, 'b'); // RED GREEN BLUE
 
 	canal_s.exportJuliaFrame(output, 0);
 	canal_v.exportJuliaFrame(output, 0);
 	
 	size_t k=0;
-	for (size_t i = n; k < n; i--,id[0]='\0') { //Se itera con el valor de iteracion mayor.
+	for (size_t i = n; k < n && k< iteracion_max; i--,id[0]='\0') { //Se itera con el valor de iteracion mayor.
 		//Consigo el nombre reemplazando extract por id
 		nombre = output;
 		sprintf(id, "%04d", k);
 		remplace_1(nombre, id, extract); //reemplazo
 		/* =================== CANAL H =================== */
 		canal_h.exportJuliaFrame(nombre, i);
-		printf("[%d/%d] > %s [OK]\n", ++k, n, nombre.c_str());
+		printf("[%d/%d] > %s [OK]\n", ++k, iteracion_max, nombre.c_str());
 	}
 
 	auto end = std::chrono::high_resolution_clock::now();
@@ -239,7 +244,12 @@ int generador_de_cuadros(string out, size_t &frames) {
 	canal_v.exportJuliaFrame(out,0);
 
 	double eval = EVAL_START;
-	double limit = (EVAL_STOP + EVAL_STEP) / 2.;
+	double limit = EVAL_STOP + (EVAL_STEP / 2.);
+	
+	if (limit > USE_ITERATION) {
+		cout << "Warning: Se va a evitar el comando: (-iter ..)\n";
+	}
+
 	int i,k;
 	for (i=0, k=0; eval < limit; i++,k++) {
 		//Calculo el valor actual, reemplaza X por un valor en el intervalo:
